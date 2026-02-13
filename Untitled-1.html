@@ -67,29 +67,12 @@
             transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Game Progress Bar */
-        .progress-container {
-            height: 14px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 999px;
-            position: relative;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        #game-progress {
-            height: 100%;
-            background: linear-gradient(90deg, #ec4899, #fbcfe8);
-            border-radius: 999px;
-            width: 5%;
-            transition: width 0.4s ease;
-            box-shadow: 0 0 15px var(--pink-main);
-        }
-
         /* Whisper Font Styles - SMALLER FOR INTIMACY */
         .whisper-text {
-            font-size: 0.75rem; /* Lowered font size */
+            font-size: 0.78rem; 
             line-height: 1.7;
-            letter-spacing: 0.03em;
-            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.02em;
+            color: rgba(255, 255, 255, 0.55);
             font-style: italic;
         }
 
@@ -116,18 +99,6 @@
             to { transform: translateY(110vh) rotate(360deg); }
         }
 
-        /* Secret Scratch Reveal */
-        .secret-note {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px dashed rgba(236, 72, 153, 0.3);
-            cursor: pointer;
-            transition: all 0.5s ease;
-        }
-        .secret-note.revealed {
-            background: rgba(236, 72, 153, 0.1);
-            border: 1px solid var(--pink-main);
-        }
-
         .page { display: none; opacity: 0; transition: all 0.8s ease; }
         .page.active { display: flex; opacity: 1; }
         #no-button { transition: all 0.2s ease; }
@@ -140,6 +111,19 @@
             0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.7); }
             70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(236, 72, 153, 0); }
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
+        }
+
+        /* Ripple for Kiss button */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(236, 72, 153, 0.4);
+            transform: scale(0);
+            animation: ripple-effect 0.8s linear;
+            pointer-events: none;
+        }
+        @keyframes ripple-effect {
+            to { transform: scale(4); opacity: 0; }
         }
     </style>
 </head>
@@ -163,10 +147,10 @@
             Will you be my Valentine?
         </h1>
         
-        <p class="text-zinc-500 text-lg mb-12 italic">"10,000 km between us, but you're my only world."</p>
+        <p class="text-zinc-500 text-lg mb-12 italic font-medium">"10,000 km between us, but you're my only world."</p>
 
         <div class="flex flex-col sm:flex-row items-center gap-10">
-            <button id="yes-btn" class="px-16 py-6 bg-pink-600 hover:bg-pink-500 text-white rounded-full font-black text-2xl shadow-[0_0_40px_rgba(236,72,153,0.4)] transition-all z-20">
+            <button id="yes-btn" class="px-16 py-6 bg-pink-600 hover:bg-pink-500 text-white rounded-full font-black text-2xl shadow-[0_0_40px_rgba(236,72,153,0.4)] transition-all z-20 hover:scale-105 active:scale-95">
                 YES! ❤️
             </button>
             <button id="no-button" class="px-10 py-4 bg-zinc-900/40 text-zinc-600 rounded-full font-bold border border-zinc-800">No.</button>
@@ -181,16 +165,18 @@
                 <h1 class="text-5xl md:text-8xl font-black tracking-tighter italic">
                     HAPPY FIRST <br/>VALENTINE, <span class="text-pink-500 uppercase">BABE!</span>
                 </h1>
-                <p class="text-zinc-500 text-sm">You just made this day the best one of my life.</p>
+                <div class="flex justify-center">
+                    <div class="milestone-badge">Feb 14, 2026 • Established Love</div>
+                </div>
             </div>
 
             <!-- Polaroid Photo Section -->
             <div class="flex justify-center py-8">
-                <div class="polaroid">
+                <div class="polaroid group cursor-pointer">
                     <div class="w-64 h-64 md:w-80 md:h-80 bg-zinc-100 overflow-hidden relative">
-                        <!-- REPLACE WITH YOUR PHOTO -->
-                        <img src="my.jpg" 
-                             alt="Us" class="w-full h-full object-cover">
+                        <!-- REPLACE WITH YOUR PHOTO URL -->
+                        <img src="https://images.unsplash.com/photo-1516589174184-c68526614fd5?auto=format&fit=crop&q=80&w=800" 
+                             alt="Us Together" class="w-full h-full object-cover">
                     </div>
                     <p class="text-zinc-800 font-serif text-2xl mt-4">Our First Memory ❤️</p>
                 </div>
@@ -201,7 +187,7 @@
                 <div class="flex justify-between items-center mb-4">
                     <div class="text-left">
                         <p class="text-pink-500 font-black text-[9px] tracking-widest uppercase mb-1">Sri Lanka</p>
-                        <div id="sl-time" class="text-xl font-bold">--:--</div>
+                        <div id="sl-time" class="text-xl font-bold text-white tabular-nums">--:--</div>
                     </div>
                     <div class="flex-1 flex flex-col items-center px-6">
                         <div class="heartbeat-dot"></div>
@@ -209,30 +195,30 @@
                     </div>
                     <div class="text-right">
                         <p class="text-pink-500 font-black text-[10px] tracking-widest uppercase mb-1">New Zealand</p>
-                        <div id="nz-time" class="text-xl font-bold">--:--</div>
+                        <div id="nz-time" class="text-xl font-bold text-white tabular-nums">--:--</div>
                     </div>
                 </div>
                 <p class="text-zinc-500 text-[10px] italic">"Distance means so little when someone means so much."</p>
             </div>
 
-            <!-- MINI GAME: Catch the Love to Unlock Messages -->
+            <!-- MINI GAME: Catch the Love -->
             <div id="game-container" class="bg-zinc-900/60 border-2 border-pink-500/20 p-10 rounded-[3rem] shadow-2xl relative overflow-hidden">
                 <div id="game-intro">
                     <h3 class="text-xl font-black uppercase mb-2">Catch the Love</h3>
-                    <p class="text-zinc-400 text-sm mb-6">Babe, catch 10 falling hearts/reunion gifts to unlock my secret messages for you!</p>
-                    <button id="start-game" class="px-10 py-4 bg-pink-600 rounded-full font-bold uppercase tracking-widest text-sm hover:scale-105 transition-transform">Start Playing</button>
+                    <p class="text-zinc-400 text-sm mb-6 italic">Babe, catch 10 falling items to unlock my secret messages for you!</p>
+                    <button id="start-game" class="px-10 py-4 bg-pink-600 rounded-full font-bold uppercase tracking-widest text-xs hover:scale-105 transition-transform shadow-lg shadow-pink-500/20">Start Playing</button>
                 </div>
                 
                 <div id="active-game" class="hidden h-64 relative overflow-hidden bg-zinc-950/50 rounded-2xl border border-white/5">
-                    <div class="absolute top-2 left-4 text-pink-500 font-black text-xs uppercase tracking-widest">Caught: <span id="score">0</span>/10</div>
+                    <div class="absolute top-2 left-4 text-pink-500 font-black text-[10px] uppercase tracking-widest">Caught: <span id="score">0</span>/10</div>
                 </div>
             </div>
 
-            <!-- FINAL EMOTIONAL REVEAL (HIDDEN) -->
-            <div id="final-reveal" class="hidden opacity-0 transition-all duration-1000 space-y-10 pb-20">
+            <!-- FINAL EMOTIONAL REVEAL (HIDDEN UNTIL GAME WON) -->
+            <div id="final-reveal" class="hidden opacity-0 transition-all duration-1000 space-y-12 pb-20">
                 
-                <!-- Emotional Message 1 (Lower Font Size) -->
-                <div class="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-[2.5rem] text-left relative overflow-hidden">
+                <!-- Intimate Message 1 -->
+                <div class="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-[2.5rem] text-left relative overflow-hidden shadow-xl">
                     <p class="text-pink-500 font-black tracking-widest uppercase text-[9px] mb-3">A whisper for our first year</p>
                     <p class="whisper-text">
                         "Babe, since this is our very first Valentine's Day together, I wanted to tell you how much you mean to me. 
@@ -242,21 +228,42 @@
                     </p>
                 </div>
 
-                <!-- Emotional Message 2 (Scratch/Click Reveal) -->
-                <div id="secret-scratch" class="secret-note p-10 rounded-[2.5rem] text-center space-y-4">
-                    <div id="scratch-overlay">
-                        <i data-lucide="lock" class="w-8 h-8 mx-auto text-zinc-600 mb-2"></i>
-                        <p class="text-zinc-500 text-xs font-bold uppercase tracking-widest">Tap to reveal my secret promise</p>
-                    </div>
-                    <div id="scratch-content" class="hidden">
-                        <p class="text-pink-400 font-serif italic text-2xl md:text-3xl leading-snug">
-                            "I promise that by our next Valentine's Day, I'll be right there to kiss you in person. You are my forever destination."
-                        </p>
-                        <p class="text-zinc-500 text-[10px] font-black uppercase mt-4 tracking-[0.3em]">Forever Yours.</p>
+                <!-- Intimate Message 2 -->
+                <div class="bg-pink-500/5 backdrop-blur-md border border-pink-500/20 p-8 rounded-[2.5rem] text-left shadow-xl">
+                    <p class="text-pink-500 font-black tracking-widest uppercase text-[9px] mb-3">A second secret</p>
+                    <p class="whisper-text">
+                        "I'm already dreaming of our next Valentine's Day, where the only distance between us is the space when we aren't hugging. 
+                        I carry you in my soul every single day. You are worth every mile, every time zone, and every wait."
+                    </p>
+                    <div class="mt-4 flex items-center gap-2">
+                        <div class="h-[1px] w-8 bg-pink-500"></div>
+                        <p class="text-pink-400 font-serif italic text-lg">Forever yours.</p>
                     </div>
                 </div>
 
-                <p class="text-2xl font-bold text-pink-400/80 animate-pulse italic font-serif">I love you so much, Babe! ❤️</p>
+                <!-- INTERACTIVE KISS COUNTER -->
+                <div class="pt-8" id="kiss-area">
+                    <div class="flex flex-col items-center gap-6 relative">
+                        <div class="text-center">
+                            <p class="text-zinc-500 text-[10px] uppercase font-black tracking-[0.4em] mb-2">Reunion Kiss Backlog</p>
+                            <div class="text-7xl font-black text-white flex items-center gap-3 justify-center tabular-nums">
+                                <span id="k-count">0</span> 
+                                <span class="text-pink-500 text-2xl tracking-tighter italic font-serif">Kisses</span>
+                            </div>
+                        </div>
+
+                        <button id="k-btn" class="w-40 h-40 rounded-full bg-zinc-950 border-2 border-pink-500/30 hover:border-pink-500 hover:bg-pink-600/10 transition-all active:scale-90 flex flex-col items-center justify-center group shadow-[0_0_50px_rgba(236,72,153,0.1)] relative z-10 overflow-hidden">
+                            <i data-lucide="message-circle-heart" class="w-14 h-14 text-pink-500 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-[10px] font-black uppercase tracking-widest mt-2 text-zinc-400 group-hover:text-pink-400">Send Kiss</span>
+                        </button>
+                        
+                        <p class="text-zinc-500 text-xs italic max-w-xs leading-relaxed">
+                            Babe, keep tapping! I'm keeping a precise count of every kiss I owe you. Every one of these will be delivered the second we meet again.
+                        </p>
+                    </div>
+                </div>
+                
+                <p class="text-3xl font-black text-pink-500/80 animate-pulse italic font-serif mt-10">I love you so much, Babe! ❤️</p>
             </div>
 
             <div class="flex justify-center gap-6 text-zinc-800 pb-10">
@@ -290,7 +297,7 @@
             starContainer.appendChild(star);
         }
 
-        // 3. No Button
+        // 3. No Button Logic
         const noBtn = document.getElementById('no-button');
         const teleport = (e) => {
             if (e.type === 'touchstart') e.preventDefault();
@@ -300,7 +307,7 @@
         };
         noBtn.addEventListener('mouseover', teleport); noBtn.addEventListener('touchstart', teleport);
 
-        // 4. Navigation
+        // 4. Page Transition
         document.getElementById('yes-btn').addEventListener('click', () => {
             document.getElementById('ask-page').classList.remove('active');
             setTimeout(() => {
@@ -313,7 +320,7 @@
 
         // 5. Catch the Love Game
         let score = 0;
-        const gameItems = ['❤️', '✈️', '💍', '💌', '☕', '🏠'];
+        const gameItems = ['❤️', '✈️', '💍', '💌', '🌸', '🏠', '✨'];
         const startBtn = document.getElementById('start-game');
         const activeGame = document.getElementById('active-game');
         const gameIntro = document.getElementById('game-intro');
@@ -341,34 +348,40 @@
             const item = document.createElement('div');
             item.className = 'falling-item';
             item.innerText = gameItems[Math.floor(Math.random() * gameItems.length)];
-            item.style.left = Math.random() * 90 + '%';
-            item.style.animationDuration = Math.random() * 2 + 2 + 's';
+            item.style.left = (Math.random() * 80 + 10) + '%';
+            item.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
             
             item.onclick = () => {
                 score++;
                 document.getElementById('score').innerText = score;
                 item.remove();
-                createRipple(50, 50);
             };
             activeGame.appendChild(item);
-            setTimeout(() => item.remove(), 4000);
+            setTimeout(() => { if(item.parentNode) item.remove(); }, 3500);
         }
 
-        // 6. Secret Scratch
-        const scratch = document.getElementById('secret-scratch');
-        scratch.addEventListener('click', () => {
-            scratch.classList.add('revealed');
-            document.getElementById('scratch-overlay').classList.add('hidden');
-            document.getElementById('scratch-content').classList.remove('hidden');
+        // 6. Kiss Counter with Ripple
+        let count = 0;
+        const countDisplay = document.getElementById('k-count');
+        const kBtn = document.getElementById('k-btn');
+
+        kBtn.addEventListener('click', function(e) {
+            count++;
+            countDisplay.innerText = count;
+            
+            // Create Ripple
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple');
+            this.appendChild(ripple);
+            
+            const x = e.clientX - e.target.offsetLeft;
+            const y = e.clientY - e.target.offsetTop;
+            
+            ripple.style.left = '50%';
+            ripple.style.top = '50%';
+            
+            setTimeout(() => { ripple.remove(); }, 800);
         });
-
-        function createRipple(x, y) {
-            const rip = document.createElement('div');
-            rip.className = 'ripple';
-            rip.style.left = `50%`; rip.style.top = `50%`;
-            document.getElementById('confirmed-page').appendChild(rip);
-            setTimeout(() => rip.remove(), 1000);
-        }
     </script>
 </body>
 </html>
