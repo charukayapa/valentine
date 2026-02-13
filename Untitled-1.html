@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Our First Valentine's Day, Babe!</title>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&family=Dancing+Script:wght@700&family=Quicksand:wght@300;500;700&display=swap');
+
+        :root {
+            --zinc-950: #09090b;
+            --pink-light: #fbcfe8;
+            --pink-main: #ec4899;
+            --pink-dark: #831843;
+        }
+
+        body {
+            background-color: var(--zinc-950);
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            user-select: none;
+        }
+
+        .font-serif {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Ambient Dynamic Backgrounds */
+        .glow-sphere {
+            position: fixed;
+            width: 80vw;
+            height: 80vw;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.07) 0%, transparent 70%);
+            filter: blur(100px);
+            border-radius: 50%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .glow-1 { top: -20%; left: -20%; animation: float-slow 15s infinite alternate; }
+        .glow-2 { bottom: -20%; right: -20%; animation: float-slow 20s infinite alternate-reverse; }
+
+        @keyframes float-slow {
+            from { transform: translate(0, 0); }
+            to { transform: translate(10%, 10%); }
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        /* Polaroid Aesthetics */
+        .polaroid {
+            background: white;
+            padding: 12px 12px 45px 12px;
+            transform: rotate(-3deg);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 20px rgba(236, 72, 153, 0.2);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Game Progress Bar */
+        .progress-container {
+            height: 14px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 999px;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        #game-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #ec4899, #fbcfe8);
+            border-radius: 999px;
+            width: 5%;
+            transition: width 0.4s ease;
+            box-shadow: 0 0 15px var(--pink-main);
+        }
+
+        /* Whisper Font Styles - SMALLER FOR INTIMACY */
+        .whisper-text {
+            font-size: 0.75rem; /* Lowered font size */
+            line-height: 1.7;
+            letter-spacing: 0.03em;
+            color: rgba(255, 255, 255, 0.5);
+            font-style: italic;
+        }
+
+        .milestone-badge {
+            background: linear-gradient(135deg, var(--pink-dark), var(--pink-main));
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Catch the Love Game Items */
+        .falling-item {
+            position: absolute;
+            cursor: pointer;
+            font-size: 2rem;
+            animation: fall linear forwards;
+            filter: drop-shadow(0 0 10px rgba(236, 72, 153, 0.5));
+            z-index: 100;
+        }
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* Secret Scratch Reveal */
+        .secret-note {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed rgba(236, 72, 153, 0.3);
+            cursor: pointer;
+            transition: all 0.5s ease;
+        }
+        .secret-note.revealed {
+            background: rgba(236, 72, 153, 0.1);
+            border: 1px solid var(--pink-main);
+        }
+
+        .page { display: none; opacity: 0; transition: all 0.8s ease; }
+        .page.active { display: flex; opacity: 1; }
+        #no-button { transition: all 0.2s ease; }
+
+        .heartbeat-dot {
+            width: 6px; height: 6px; background: var(--pink-main); border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+        @keyframes pulse-dot {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(236, 72, 153, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow-sphere glow-1"></div>
+    <div class="glow-sphere glow-2"></div>
+    <div id="stars-field" class="fixed inset-0 pointer-events-none"></div>
+
+    <!-- PAGE 1: ASK -->
+    <div id="ask-page" class="page active min-h-screen w-full flex flex-col items-center justify-center p-8 text-center">
+        <div class="mb-8">
+            <div class="milestone-badge mb-6 animate-bounce">Our Very First Valentine</div>
+            <div class="relative inline-block">
+                <i data-lucide="heart" class="w-20 h-20 text-pink-500 fill-pink-500 animate-pulse"></i>
+            </div>
+        </div>
+        
+        <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tighter">
+            Hey <span class="text-pink-500 italic font-serif">Babe</span>,<br />
+            Will you be my Valentine?
+        </h1>
+        
+        <p class="text-zinc-500 text-lg mb-12 italic">"10,000 km between us, but you're my only world."</p>
+
+        <div class="flex flex-col sm:flex-row items-center gap-10">
+            <button id="yes-btn" class="px-16 py-6 bg-pink-600 hover:bg-pink-500 text-white rounded-full font-black text-2xl shadow-[0_0_40px_rgba(236,72,153,0.4)] transition-all z-20">
+                YES! ❤️
+            </button>
+            <button id="no-button" class="px-10 py-4 bg-zinc-900/40 text-zinc-600 rounded-full font-bold border border-zinc-800">No.</button>
+        </div>
+    </div>
+
+    <!-- PAGE 2: CONFIRMED -->
+    <div id="confirmed-page" class="page min-h-screen w-full flex flex-col items-center p-6 text-center overflow-y-auto">
+        <div class="max-w-2xl w-full space-y-16 py-20">
+            
+            <div class="space-y-4">
+                <h1 class="text-5xl md:text-8xl font-black tracking-tighter italic">
+                    HAPPY FIRST <br/>VALENTINE, <span class="text-pink-500 uppercase">BABE!</span>
+                </h1>
+                <p class="text-zinc-500 text-sm">You just made this day the best one of my life.</p>
+            </div>
+
+            <!-- Polaroid Photo Section -->
+            <div class="flex justify-center py-8">
+                <div class="polaroid">
+                    <div class="w-64 h-64 md:w-80 md:h-80 bg-zinc-100 overflow-hidden relative">
+                        <!-- REPLACE WITH YOUR PHOTO -->
+                        <img src="https://images.unsplash.com/photo-1516589174184-c68526614fd5?auto=format&fit=crop&q=80&w=800" 
+                             alt="Us" class="w-full h-full object-cover">
+                    </div>
+                    <p class="text-zinc-800 font-serif text-2xl mt-4">Our First Memory ❤️</p>
+                </div>
+            </div>
+
+            <!-- Sri Lanka to NZ Connection Visual -->
+            <div class="bg-zinc-900/40 backdrop-blur-xl border border-white/5 p-8 rounded-[3rem] shadow-2xl relative overflow-hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <div class="text-left">
+                        <p class="text-pink-500 font-black text-[9px] tracking-widest uppercase mb-1">Sri Lanka</p>
+                        <div id="sl-time" class="text-xl font-bold">--:--</div>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center px-6">
+                        <div class="heartbeat-dot"></div>
+                        <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-pink-500/50 to-transparent mt-3"></div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-pink-500 font-black text-[10px] tracking-widest uppercase mb-1">New Zealand</p>
+                        <div id="nz-time" class="text-xl font-bold">--:--</div>
+                    </div>
+                </div>
+                <p class="text-zinc-500 text-[10px] italic">"Distance means so little when someone means so much."</p>
+            </div>
+
+            <!-- MINI GAME: Catch the Love to Unlock Messages -->
+            <div id="game-container" class="bg-zinc-900/60 border-2 border-pink-500/20 p-10 rounded-[3rem] shadow-2xl relative overflow-hidden">
+                <div id="game-intro">
+                    <h3 class="text-xl font-black uppercase mb-2">Catch the Love</h3>
+                    <p class="text-zinc-400 text-sm mb-6">Babe, catch 10 falling hearts/reunion gifts to unlock my secret messages for you!</p>
+                    <button id="start-game" class="px-10 py-4 bg-pink-600 rounded-full font-bold uppercase tracking-widest text-sm hover:scale-105 transition-transform">Start Playing</button>
+                </div>
+                
+                <div id="active-game" class="hidden h-64 relative overflow-hidden bg-zinc-950/50 rounded-2xl border border-white/5">
+                    <div class="absolute top-2 left-4 text-pink-500 font-black text-xs uppercase tracking-widest">Caught: <span id="score">0</span>/10</div>
+                </div>
+            </div>
+
+            <!-- FINAL EMOTIONAL REVEAL (HIDDEN) -->
+            <div id="final-reveal" class="hidden opacity-0 transition-all duration-1000 space-y-10 pb-20">
+                
+                <!-- Emotional Message 1 (Lower Font Size) -->
+                <div class="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-[2.5rem] text-left relative overflow-hidden">
+                    <p class="text-pink-500 font-black tracking-widest uppercase text-[9px] mb-3">A whisper for our first year</p>
+                    <p class="whisper-text">
+                        "Babe, since this is our very first Valentine's Day together, I wanted to tell you how much you mean to me. 
+                        Waking up knowing you're my person makes even the hardest days feel lighter. Being 10,000 km away isn't how 
+                        I wanted to spend today, but it just proves that what we have is unbreakable. You've captured my heart in a way 
+                        I never thought possible."
+                    </p>
+                </div>
+
+                <!-- Emotional Message 2 (Scratch/Click Reveal) -->
+                <div id="secret-scratch" class="secret-note p-10 rounded-[2.5rem] text-center space-y-4">
+                    <div id="scratch-overlay">
+                        <i data-lucide="lock" class="w-8 h-8 mx-auto text-zinc-600 mb-2"></i>
+                        <p class="text-zinc-500 text-xs font-bold uppercase tracking-widest">Tap to reveal my secret promise</p>
+                    </div>
+                    <div id="scratch-content" class="hidden">
+                        <p class="text-pink-400 font-serif italic text-2xl md:text-3xl leading-snug">
+                            "I promise that by our next Valentine's Day, I'll be right there to kiss you in person. You are my forever destination."
+                        </p>
+                        <p class="text-zinc-500 text-[10px] font-black uppercase mt-4 tracking-[0.3em]">Forever Yours.</p>
+                    </div>
+                </div>
+
+                <p class="text-2xl font-bold text-pink-400/80 animate-pulse italic font-serif">I love you so much, Babe! ❤️</p>
+            </div>
+
+            <div class="flex justify-center gap-6 text-zinc-800 pb-10">
+                <div class="flex items-center gap-2 text-[10px] uppercase font-bold tracking-widest">Sri Lanka</div>
+                <div class="w-1 h-1 rounded-full bg-zinc-800 self-center"></div>
+                <div class="flex items-center gap-2 text-[10px] uppercase font-bold tracking-widest">New Zealand</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // 1. Time Logic
+        function updateTimes() {
+            const options = { hour: '2-digit', minute: '2-digit', hour12: true };
+            document.getElementById('sl-time').innerText = new Date().toLocaleTimeString('en-US', { ...options, timeZone: 'Asia/Colombo' });
+            document.getElementById('nz-time').innerText = new Date().toLocaleTimeString('en-US', { ...options, timeZone: 'Pacific/Auckland' });
+        }
+        setInterval(updateTimes, 1000); updateTimes();
+
+        // 2. Stars
+        const starContainer = document.getElementById('stars-field');
+        for (let i = 0; i < 50; i++) {
+            const star = document.createElement('div'); star.className = 'star';
+            const size = Math.random() * 3 + 1;
+            star.style.width = star.style.height = `${size}px`;
+            star.style.top = `${Math.random() * 100}%`; star.style.left = `${Math.random() * 100}%`;
+            star.style.animation = `float-slow ${Math.random() * 10 + 5}s infinite alternate`;
+            starContainer.appendChild(star);
+        }
+
+        // 3. No Button
+        const noBtn = document.getElementById('no-button');
+        const teleport = (e) => {
+            if (e.type === 'touchstart') e.preventDefault();
+            const x = Math.random() * (window.innerWidth - 150);
+            const y = Math.random() * (window.innerHeight - 100);
+            noBtn.style.position = 'fixed'; noBtn.style.left = `${x}px`; noBtn.style.top = `${y}px`;
+        };
+        noBtn.addEventListener('mouseover', teleport); noBtn.addEventListener('touchstart', teleport);
+
+        // 4. Navigation
+        document.getElementById('yes-btn').addEventListener('click', () => {
+            document.getElementById('ask-page').classList.remove('active');
+            setTimeout(() => {
+                document.getElementById('ask-page').style.display = 'none';
+                document.getElementById('confirmed-page').classList.add('active');
+                document.getElementById('confirmed-page').style.display = 'flex';
+                lucide.createIcons();
+            }, 100);
+        });
+
+        // 5. Catch the Love Game
+        let score = 0;
+        const gameItems = ['❤️', '✈️', '💍', '💌', '☕', '🏠'];
+        const startBtn = document.getElementById('start-game');
+        const activeGame = document.getElementById('active-game');
+        const gameIntro = document.getElementById('game-intro');
+        const finalReveal = document.getElementById('final-reveal');
+
+        startBtn.addEventListener('click', () => {
+            gameIntro.style.display = 'none';
+            activeGame.classList.remove('hidden');
+            const interval = setInterval(() => {
+                if (score >= 10) {
+                    clearInterval(interval);
+                    activeGame.innerHTML = "<div class='flex items-center justify-center h-full font-black text-pink-500 uppercase tracking-tighter text-2xl animate-bounce'>UNLOCKED! ❤️</div>";
+                    finalReveal.classList.remove('hidden');
+                    setTimeout(() => {
+                        finalReveal.style.opacity = '1';
+                        finalReveal.scrollIntoView({ behavior: 'smooth' });
+                    }, 500);
+                    return;
+                }
+                createFallingItem();
+            }, 800);
+        });
+
+        function createFallingItem() {
+            const item = document.createElement('div');
+            item.className = 'falling-item';
+            item.innerText = gameItems[Math.floor(Math.random() * gameItems.length)];
+            item.style.left = Math.random() * 90 + '%';
+            item.style.animationDuration = Math.random() * 2 + 2 + 's';
+            
+            item.onclick = () => {
+                score++;
+                document.getElementById('score').innerText = score;
+                item.remove();
+                createRipple(50, 50);
+            };
+            activeGame.appendChild(item);
+            setTimeout(() => item.remove(), 4000);
+        }
+
+        // 6. Secret Scratch
+        const scratch = document.getElementById('secret-scratch');
+        scratch.addEventListener('click', () => {
+            scratch.classList.add('revealed');
+            document.getElementById('scratch-overlay').classList.add('hidden');
+            document.getElementById('scratch-content').classList.remove('hidden');
+        });
+
+        function createRipple(x, y) {
+            const rip = document.createElement('div');
+            rip.className = 'ripple';
+            rip.style.left = `50%`; rip.style.top = `50%`;
+            document.getElementById('confirmed-page').appendChild(rip);
+            setTimeout(() => rip.remove(), 1000);
+        }
+    </script>
+</body>
+</html>
