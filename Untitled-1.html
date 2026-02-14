@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Our First Valentine's Day, Babe!</title>
+    <title>Happy First Valentine, Babe!</title>
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Tailwind CSS CDN -->
@@ -67,9 +67,9 @@
             transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Whisper Font Styles - SMALLER FOR INTIMACY */
+        /* Whisper Font Styles - Intimate and small */
         .whisper-text {
-            font-size: 0.78rem; 
+            font-size: 0.75rem; 
             line-height: 1.7;
             letter-spacing: 0.02em;
             color: rgba(255, 255, 255, 0.55);
@@ -86,44 +86,104 @@
             letter-spacing: 1px;
         }
 
-        /* Catch the Love Game Items */
-        .falling-item {
-            position: absolute;
-            cursor: pointer;
-            font-size: 2rem;
-            animation: fall linear forwards;
-            filter: drop-shadow(0 0 10px rgba(236, 72, 153, 0.5));
-            z-index: 100;
+        /* Slider Game */
+        .slider-track {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 999px;
+            position: relative;
+            margin: 40px 0;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        @keyframes fall {
-            to { transform: translateY(110vh) rotate(360deg); }
+        
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+            z-index: 10;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 60px;
+            width: 60px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23ec4899' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.3c.4-.2.6-.7.5-1.1z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: 40px;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 50%;
+            background-color: var(--zinc-950);
+            border: 2px solid rgba(236, 72, 153, 0.5);
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);
+            transform: rotate(45deg);
+            margin-top: -24px;
+        }
+
+        /* Memory Game Styles */
+        .card {
+            aspect-ratio: 1/1;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 1rem;
+        }
+        .card-front {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .card-back {
+            background: var(--pink-main);
+            transform: rotateY(180deg);
         }
 
         .page { display: none; opacity: 0; transition: all 0.8s ease; }
         .page.active { display: flex; opacity: 1; }
-        #no-button { transition: all 0.2s ease; }
-
-        .heartbeat-dot {
-            width: 6px; height: 6px; background: var(--pink-main); border-radius: 50%;
-            animation: pulse-dot 2s infinite;
-        }
-        @keyframes pulse-dot {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(236, 72, 153, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
-        }
-
-        /* Ripple for Kiss button */
-        .ripple {
+        
+        /* Floating Popping Elements */
+        .pop-element {
             position: absolute;
-            border-radius: 50%;
-            background: rgba(236, 72, 153, 0.4);
-            transform: scale(0);
-            animation: ripple-effect 0.8s linear;
             pointer-events: none;
+            z-index: 200;
+            font-size: 2.2rem;
+            animation: pop-away 1.5s ease-out forwards;
         }
-        @keyframes ripple-effect {
-            to { transform: scale(4); opacity: 0; }
+        @keyframes pop-away {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+            100% { 
+                transform: translate(var(--tw-translate-x), var(--tw-translate-y)) scale(1.8) rotate(var(--tw-rotate)); 
+                opacity: 0; 
+            }
+        }
+
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
         }
     </style>
 </head>
@@ -133,40 +193,42 @@
     <div class="glow-sphere glow-2"></div>
     <div id="stars-field" class="fixed inset-0 pointer-events-none"></div>
 
-    <!-- PAGE 1: ASK -->
+    <!-- PAGE 1: ENTRY -->
     <div id="ask-page" class="page active min-h-screen w-full flex flex-col items-center justify-center p-8 text-center">
         <div class="mb-8">
-            <div class="milestone-badge mb-6 animate-bounce">Our Very First Valentine</div>
+            <div class="milestone-badge mb-6 animate-bounce">Our Very First February 14th</div>
             <div class="relative inline-block">
-                <i data-lucide="heart" class="w-20 h-20 text-pink-500 fill-pink-500 animate-pulse"></i>
+                <i data-lucide="sparkles" class="w-16 h-16 text-pink-400 animate-pulse"></i>
             </div>
         </div>
         
-        <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tighter">
-            Hey <span class="text-pink-500 italic font-serif">Babe</span>,<br />
-            Will you be my Valentine?
+        <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tighter leading-tight text-white uppercase">
+            Happy First Valentine, <br />
+            <span class="text-pink-500 italic font-serif">Babe!</span>
         </h1>
         
-        <p class="text-zinc-500 text-lg mb-12 italic font-medium">"10,000 km between us, but you're my only world."</p>
+        <p class="text-zinc-500 text-lg mb-12 italic font-medium">
+            "I have a little surprise waiting inside for you..."
+        </p>
 
         <div class="flex flex-col sm:flex-row items-center gap-10">
             <button id="yes-btn" class="px-16 py-6 bg-pink-600 hover:bg-pink-500 text-white rounded-full font-black text-2xl shadow-[0_0_40px_rgba(236,72,153,0.4)] transition-all z-20 hover:scale-105 active:scale-95">
-                YES! ❤️
+                Open It! ❤️
             </button>
-            <button id="no-button" class="px-10 py-4 bg-zinc-900/40 text-zinc-600 rounded-full font-bold border border-zinc-800">No.</button>
+            <button id="no-button" class="px-10 py-4 bg-zinc-900/40 text-zinc-600 rounded-full font-bold border border-zinc-800 opacity-50 text-sm">Don't Open</button>
         </div>
     </div>
 
-    <!-- PAGE 2: CONFIRMED -->
+    <!-- PAGE 2: THE REVEAL -->
     <div id="confirmed-page" class="page min-h-screen w-full flex flex-col items-center p-6 text-center overflow-y-auto">
         <div class="max-w-2xl w-full space-y-16 py-20">
             
             <div class="space-y-4">
-                <h1 class="text-5xl md:text-8xl font-black tracking-tighter italic">
-                    HAPPY FIRST <br/>VALENTINE, <span class="text-pink-500 uppercase">BABE!</span>
+                <h1 class="text-4xl md:text-7xl font-black tracking-tighter italic leading-none uppercase text-white">
+                    HAPPY FIRST <br/><span class="text-pink-500 underline decoration-pink-500/20 underline-offset-4">VALENTINE BBE</span>
                 </h1>
-                <div class="flex justify-center">
-                    <div class="milestone-badge">Feb 14, 2026 • Established Love</div>
+                <div class="flex justify-center mt-6">
+                    <div class="milestone-badge">Sri Lanka ⇄ New Zealand • Bound by Love</div>
                 </div>
             </div>
 
@@ -174,11 +236,10 @@
             <div class="flex justify-center py-8">
                 <div class="polaroid group cursor-pointer">
                     <div class="w-64 h-64 md:w-80 md:h-80 bg-zinc-100 overflow-hidden relative">
-                        <!-- REPLACE WITH YOUR PHOTO URL -->
                         <img src="my.jpg" 
                              alt="Us Together" class="w-full h-full object-cover">
                     </div>
-                    <p class="text-zinc-800 font-serif text-2xl mt-4">Our First Memory ❤️</p>
+                    <p class="text-zinc-800 font-serif text-2xl mt-4 text-center">Us Forever ❤️</p>
                 </div>
             </div>
 
@@ -190,7 +251,7 @@
                         <div id="sl-time" class="text-xl font-bold text-white tabular-nums">--:--</div>
                     </div>
                     <div class="flex-1 flex flex-col items-center px-6">
-                        <div class="heartbeat-dot"></div>
+                        <i data-lucide="plane" class="w-4 h-4 text-pink-500/30 animate-pulse"></i>
                         <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-pink-500/50 to-transparent mt-3"></div>
                     </div>
                     <div class="text-right">
@@ -198,72 +259,104 @@
                         <div id="nz-time" class="text-xl font-bold text-white tabular-nums">--:--</div>
                     </div>
                 </div>
-                <p class="text-zinc-500 text-[10px] italic">"Distance means so little when someone means so much."</p>
+                <p class="text-zinc-500 text-[10px] italic">"10,000 km across the ocean, but my heart lives in your pocket."</p>
             </div>
 
-            <!-- MINI GAME: Catch the Love -->
-            <div id="game-container" class="bg-zinc-900/60 border-2 border-pink-500/20 p-10 rounded-[3rem] shadow-2xl relative overflow-hidden">
-                <div id="game-intro">
-                    <h3 class="text-xl font-black uppercase mb-2">Catch the Love</h3>
-                    <p class="text-zinc-400 text-sm mb-6 italic">Babe, catch 10 falling items to unlock my secret messages for you!</p>
-                    <button id="start-game" class="px-10 py-4 bg-pink-600 rounded-full font-bold uppercase tracking-widest text-xs hover:scale-105 transition-transform shadow-lg shadow-pink-500/20">Start Playing</button>
-                </div>
+            <!-- GAME 1: FLIGHT SLIDER -->
+            <div id="slider-game-container" class="bg-zinc-900/60 border-2 border-pink-500/20 p-10 rounded-[3rem] shadow-2xl relative overflow-hidden transition-all duration-500">
+                <h3 class="text-xl font-black uppercase mb-2 italic">Bridge the Miles</h3>
+                <p class="text-zinc-400 text-sm mb-6 italic">Bbe, swipe the airplane from SL to NZ!</p>
                 
-                <div id="active-game" class="hidden h-64 relative overflow-hidden bg-zinc-950/50 rounded-2xl border border-white/5">
-                    <div class="absolute top-2 left-4 text-pink-500 font-black text-[10px] uppercase tracking-widest">Caught: <span id="score">0</span>/10</div>
+                <div class="relative px-4 pb-4">
+                    <div class="flex justify-between text-[10px] font-black text-pink-500/40 mb-2 uppercase tracking-widest">
+                        <span>Colombo</span>
+                        <span>Auckland</span>
+                    </div>
+                    <div class="slider-track">
+                         <input type="range" id="love-slider" value="0" min="0" max="100">
+                    </div>
                 </div>
             </div>
 
-            <!-- FINAL EMOTIONAL REVEAL (HIDDEN UNTIL GAME WON) -->
+            <!-- NEW GAME 2: SOULMATE MATCH (MEMORY) -->
+            <div id="memory-game-container" class="hidden opacity-0 scale-95 bg-zinc-900/60 border-2 border-pink-500/20 p-10 rounded-[3rem] shadow-2xl relative overflow-hidden transition-all duration-700">
+                <div class="mb-6">
+                    <h3 class="text-xl font-black uppercase italic">Soulmate Match</h3>
+                    <p class="text-zinc-400 text-xs mt-1 italic">Our hearts are two of a kind. Match the pairs, Babe!</p>
+                </div>
+                <div id="card-grid" class="grid grid-cols-3 gap-3 max-w-sm mx-auto">
+                    <!-- Cards injected by JS -->
+                </div>
+            </div>
+
+            <!-- GAME 3: SECRET VAULT QUESTION -->
+            <div id="questions-game-container" class="hidden opacity-0 scale-95 bg-zinc-900/60 border-2 border-pink-500/20 p-10 rounded-[3rem] shadow-2xl relative overflow-hidden transition-all duration-700">
+                <div class="mb-8">
+                    <div class="w-16 h-16 bg-pink-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                         <i data-lucide="lock-keyhole" class="w-8 h-8 text-pink-500"></i>
+                    </div>
+                    <h3 class="text-2xl font-black uppercase italic tracking-tighter">Final Unlock</h3>
+                    <p class="text-zinc-400 text-xs mt-1 italic">Only you know the date that changed everything...</p>
+                </div>
+
+                <div class="space-y-8 text-left">
+                    <div class="group text-center">
+                        <label class="text-[11px] uppercase font-black text-pink-500/60 tracking-[0.15em] block mb-3 pl-2 transition-colors group-focus-within:text-pink-400 italic leading-relaxed">
+                           Babe, remember the moment time stood still... what was the date of our first kiss?
+                        </label>
+                        <input type="text" id="ans-1" placeholder="YYYY/MM/DD" class="w-full bg-zinc-950/80 border border-white/5 rounded-2xl p-5 text-sm focus:outline-none focus:border-pink-500/50 transition-all text-white placeholder:text-zinc-800 tracking-widest text-center font-bold">
+                    </div>
+                    <button id="unlock-vault-btn" class="w-full py-5 bg-pink-600 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-pink-500 transition-all shadow-xl shadow-pink-900/20">
+                        Unlock My Heart ❤️
+                    </button>
+                </div>
+            </div>
+
+            <!-- FINAL SURPRISE REVEAL -->
             <div id="final-reveal" class="hidden opacity-0 transition-all duration-1000 space-y-12 pb-20">
-                
-                <!-- Intimate Message 1 -->
                 <div class="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-[2.5rem] text-left relative overflow-hidden shadow-xl">
-                    <p class="text-pink-500 font-black tracking-widest uppercase text-[9px] mb-3">A whisper for our first year</p>
+                    <p class="text-pink-500 font-black tracking-widest uppercase text-[9px] mb-3">A whisper for our first Valentine</p>
                     <p class="whisper-text">
                         "Babe, since this is our very first Valentine's Day together, I wanted to tell you how much you mean to me. 
                         Waking up knowing you're my person makes even the hardest days feel lighter. Being 10,000 km away isn't how 
-                        I wanted to spend today, but it just proves that what we have is unbreakable. You've captured my heart in a way 
-                        I never thought possible."
+                        I wanted to spend today, but it just proves that what we have is unbreakable."
                     </p>
                 </div>
 
-                <!-- Intimate Message 2 -->
                 <div class="bg-pink-500/5 backdrop-blur-md border border-pink-500/20 p-8 rounded-[2.5rem] text-left shadow-xl">
-                    <p class="text-pink-500 font-black tracking-widest uppercase text-[9px] mb-3">A second secret</p>
+                    <p class="text-pink-500 font-black tracking-widest uppercase text-[9px] mb-3">One more secret...</p>
                     <p class="whisper-text">
-                        "I'm already dreaming of our next Valentine's Day, where the only distance between us is the space when we aren't hugging. 
-                        I carry you in my soul every single day. You are worth every mile, every time zone, and every wait."
+                        "I'm already dreaming of our next Valentine's Day, where I won't have to send this through a screen. 
+                        I'll be right there, holding you. You are worth every single mile, and every single minute of the wait."
                     </p>
                     <div class="mt-4 flex items-center gap-2">
                         <div class="h-[1px] w-8 bg-pink-500"></div>
-                        <p class="text-pink-400 font-serif italic text-lg">Forever yours.</p>
+                        <p class="text-pink-400 font-serif italic text-lg">Forever yours, Bbe.</p>
                     </div>
                 </div>
 
-                <!-- INTERACTIVE KISS COUNTER -->
                 <div class="pt-8" id="kiss-area">
                     <div class="flex flex-col items-center gap-6 relative">
                         <div class="text-center">
-                            <p class="text-zinc-500 text-[10px] uppercase font-black tracking-[0.4em] mb-2">Reunion Kiss Backlog</p>
-                            <div class="text-7xl font-black text-white flex items-center gap-3 justify-center tabular-nums">
+                            <p class="text-zinc-500 text-[10px] uppercase font-black tracking-[0.4em] mb-2">Hold for Popping Kisses</p>
+                            <div class="text-7xl font-black text-white flex items-center gap-3 justify-center tabular-nums drop-shadow-[0_0_15px_rgba(236,72,153,0.3)]">
                                 <span id="k-count">0</span> 
                                 <span class="text-pink-500 text-2xl tracking-tighter italic font-serif">Kisses</span>
                             </div>
                         </div>
 
-                        <button id="k-btn" class="w-40 h-40 rounded-full bg-zinc-950 border-2 border-pink-500/30 hover:border-pink-500 hover:bg-pink-600/10 transition-all active:scale-90 flex flex-col items-center justify-center group shadow-[0_0_50px_rgba(236,72,153,0.1)] relative z-10 overflow-hidden">
+                        <button id="k-btn" class="w-44 h-44 rounded-full bg-zinc-950 border-2 border-pink-500/30 hover:border-pink-500 hover:bg-pink-600/10 transition-all active:scale-95 flex flex-col items-center justify-center group shadow-[0_0_50px_rgba(236,72,153,0.15)] relative z-10 overflow-hidden touch-none select-none">
                             <i data-lucide="message-circle-heart" class="w-14 h-14 text-pink-500 group-hover:scale-110 transition-transform"></i>
-                            <span class="text-[10px] font-black uppercase tracking-widest mt-2 text-zinc-400 group-hover:text-pink-400">Send Kiss</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest mt-2 text-zinc-400 group-hover:text-pink-400">Hold Me ❤️</span>
                         </button>
                         
-                        <p class="text-zinc-500 text-xs italic max-w-xs leading-relaxed">
-                            Babe, keep tapping! I'm keeping a precise count of every kiss I owe you. Every one of these will be delivered the second we meet again.
+                        <p class="text-zinc-500 text-[11px] italic max-w-xs leading-relaxed">
+                            Babe, keep holding! I'm keeping a count of every kiss I owe you. Every one of these will be delivered the second we meet again.
                         </p>
                     </div>
                 </div>
                 
-                <p class="text-3xl font-black text-pink-500/80 animate-pulse italic font-serif mt-10">I love you so much, Babe! ❤️</p>
+                <p class="text-3xl font-black text-pink-500/80 animate-pulse italic font-serif mt-10 text-white text-center">Happy Valentine's Day, my world! ❤️</p>
             </div>
 
             <div class="flex justify-center gap-6 text-zinc-800 pb-10">
@@ -278,17 +371,19 @@
     <script>
         lucide.createIcons();
 
-        // 1. Time Logic
+        const secretAnswers = { kissDate: "2025/12/05" };
+
+        // Time Sync
         function updateTimes() {
-            const options = { hour: '2-digit', minute: '2-digit', hour12: true };
-            document.getElementById('sl-time').innerText = new Date().toLocaleTimeString('en-US', { ...options, timeZone: 'Asia/Colombo' });
-            document.getElementById('nz-time').innerText = new Date().toLocaleTimeString('en-US', { ...options, timeZone: 'Pacific/Auckland' });
+            const opt = { hour: '2-digit', minute: '2-digit', hour12: true };
+            document.getElementById('sl-time').innerText = new Date().toLocaleTimeString('en-US', { ...opt, timeZone: 'Asia/Colombo' });
+            document.getElementById('nz-time').innerText = new Date().toLocaleTimeString('en-US', { ...opt, timeZone: 'Pacific/Auckland' });
         }
         setInterval(updateTimes, 1000); updateTimes();
 
-        // 2. Stars
+        // Stars
         const starContainer = document.getElementById('stars-field');
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 40; i++) {
             const star = document.createElement('div'); star.className = 'star';
             const size = Math.random() * 3 + 1;
             star.style.width = star.style.height = `${size}px`;
@@ -297,7 +392,7 @@
             starContainer.appendChild(star);
         }
 
-        // 3. No Button Logic
+        // No Button
         const noBtn = document.getElementById('no-button');
         const teleport = (e) => {
             if (e.type === 'touchstart') e.preventDefault();
@@ -307,7 +402,7 @@
         };
         noBtn.addEventListener('mouseover', teleport); noBtn.addEventListener('touchstart', teleport);
 
-        // 4. Page Transition
+        // Page Transitions
         document.getElementById('yes-btn').addEventListener('click', () => {
             document.getElementById('ask-page').classList.remove('active');
             setTimeout(() => {
@@ -318,70 +413,158 @@
             }, 100);
         });
 
-        // 5. Catch the Love Game
-        let score = 0;
-        const gameItems = ['❤️', '✈️', '💍', '💌', '🌸', '🏠', '✨'];
-        const startBtn = document.getElementById('start-game');
-        const activeGame = document.getElementById('active-game');
-        const gameIntro = document.getElementById('game-intro');
+        // --- GAME 1: SLIDER ---
+        const loveSlider = document.getElementById('love-slider');
+        const sliderGame = document.getElementById('slider-game-container');
+        const memoryGame = document.getElementById('memory-game-container');
+
+        loveSlider.addEventListener('input', function() {
+            if (this.value >= 98) {
+                this.disabled = true;
+                sliderGame.style.opacity = '0';
+                setTimeout(() => {
+                    sliderGame.classList.add('hidden');
+                    memoryGame.classList.remove('hidden');
+                    initMemoryGame();
+                    setTimeout(() => {
+                        memoryGame.style.opacity = '1';
+                        memoryGame.style.transform = 'scale(1)';
+                    }, 50);
+                }, 500);
+            }
+        });
+
+        // --- GAME 2: MEMORY ---
+        let flippedCards = [];
+        let matchedPairs = 0;
+        const cardSymbols = ['❤️', '🌸', '💎', '❤️', '🌸', '💎'];
+
+        function initMemoryGame() {
+            const grid = document.getElementById('card-grid');
+            const shuffled = cardSymbols.sort(() => Math.random() - 0.5);
+            
+            shuffled.forEach((symbol, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.dataset.symbol = symbol;
+                card.innerHTML = `
+                    <div class="card-inner">
+                        <div class="card-front"><i data-lucide="heart" class="w-6 h-6 text-pink-500/20"></i></div>
+                        <div class="card-back text-2xl">${symbol}</div>
+                    </div>
+                `;
+                card.addEventListener('click', () => flipCard(card));
+                grid.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        function flipCard(card) {
+            if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
+                card.classList.add('flipped');
+                flippedCards.push(card);
+
+                if (flippedCards.length === 2) {
+                    setTimeout(checkMatch, 800);
+                }
+            }
+        }
+
+        function checkMatch() {
+            const [c1, c2] = flippedCards;
+            if (c1.dataset.symbol === c2.dataset.symbol) {
+                matchedPairs++;
+                if (matchedPairs === 3) {
+                    setTimeout(onMemoryWin, 500);
+                }
+            } else {
+                c1.classList.remove('flipped');
+                c2.classList.remove('flipped');
+            }
+            flippedCards = [];
+        }
+
+        function onMemoryWin() {
+            memoryGame.style.opacity = '0';
+            const questionGame = document.getElementById('questions-game-container');
+            setTimeout(() => {
+                memoryGame.classList.add('hidden');
+                questionGame.classList.remove('hidden');
+                setTimeout(() => {
+                    questionGame.style.opacity = '1';
+                    questionGame.style.transform = 'scale(1)';
+                }, 50);
+            }, 500);
+        }
+
+        // --- GAME 3: SECRET VAULT ---
+        const unlockBtn = document.getElementById('unlock-vault-btn');
         const finalReveal = document.getElementById('final-reveal');
 
-        startBtn.addEventListener('click', () => {
-            gameIntro.style.display = 'none';
-            activeGame.classList.remove('hidden');
-            const interval = setInterval(() => {
-                if (score >= 10) {
-                    clearInterval(interval);
-                    activeGame.innerHTML = "<div class='flex items-center justify-center h-full font-black text-pink-500 uppercase tracking-tighter text-2xl animate-bounce'>UNLOCKED! ❤️</div>";
+        unlockBtn.addEventListener('click', () => {
+            const ans = document.getElementById('ans-1').value.trim();
+            const questionGame = document.getElementById('questions-game-container');
+
+            if (ans === secretAnswers.kissDate) {
+                questionGame.style.opacity = '0';
+                setTimeout(() => {
+                    questionGame.classList.add('hidden');
                     finalReveal.classList.remove('hidden');
                     setTimeout(() => {
                         finalReveal.style.opacity = '1';
                         finalReveal.scrollIntoView({ behavior: 'smooth' });
                     }, 500);
-                    return;
-                }
-                createFallingItem();
-            }, 800);
+                }, 500);
+            } else {
+                questionGame.classList.add('shake');
+                setTimeout(() => questionGame.classList.remove('shake'), 500);
+                unlockBtn.innerText = "Try Again, Babe!";
+                setTimeout(() => unlockBtn.innerText = "Unlock My Heart ❤️", 2000);
+            }
         });
 
-        function createFallingItem() {
-            const item = document.createElement('div');
-            item.className = 'falling-item';
-            item.innerText = gameItems[Math.floor(Math.random() * gameItems.length)];
-            item.style.left = (Math.random() * 80 + 10) + '%';
-            item.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
-            
-            item.onclick = () => {
-                score++;
-                document.getElementById('score').innerText = score;
-                item.remove();
-            };
-            activeGame.appendChild(item);
-            setTimeout(() => { if(item.parentNode) item.remove(); }, 3500);
-        }
-
-        // 6. Kiss Counter with Ripple
+        // --- KISS COUNTER ---
         let count = 0;
+        let holdInterval;
         const countDisplay = document.getElementById('k-count');
         const kBtn = document.getElementById('k-btn');
+        const popItems = ['💋', '❤️', '🌸', '🌹', '✨', '💖', '💐', '💓', '🧸'];
 
-        kBtn.addEventListener('click', function(e) {
-            count++;
-            countDisplay.innerText = count;
-            
-            // Create Ripple
-            const ripple = document.createElement('span');
-            ripple.classList.add('ripple');
-            this.appendChild(ripple);
-            
-            const x = e.clientX - e.target.offsetLeft;
-            const y = e.clientY - e.target.offsetTop;
-            
-            ripple.style.left = '50%';
-            ripple.style.top = '50%';
-            
-            setTimeout(() => { ripple.remove(); }, 800);
-        });
+        function spawnPopElement() {
+            const element = document.createElement('div');
+            element.className = 'pop-element';
+            element.innerText = popItems[Math.floor(Math.random() * popItems.length)];
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 150 + Math.random() * 250;
+            const targetX = Math.cos(angle) * distance + 'px';
+            const targetY = Math.sin(angle) * distance + 'px';
+            const targetRotate = (Math.random() - 0.5) * 360 + 'deg';
+            element.style.setProperty('--tw-translate-x', targetX);
+            element.style.setProperty('--tw-translate-y', targetY);
+            element.style.setProperty('--tw-rotate', targetRotate);
+            element.style.left = '50%'; element.style.top = '50%';
+            kBtn.appendChild(element);
+            setTimeout(() => element.remove(), 1500);
+        }
+
+        function addKiss() {
+            count++; countDisplay.innerText = count; spawnPopElement();
+            if (count % 4 === 0) spawnPopElement();
+        }
+
+        function startHolding(e) {
+            if (e.cancelable) e.preventDefault();
+            addKiss();
+            holdInterval = setInterval(addKiss, 110);
+        }
+
+        function stopHolding() { clearInterval(holdInterval); }
+
+        kBtn.addEventListener('mousedown', startHolding);
+        kBtn.addEventListener('touchstart', startHolding, { passive: false });
+        window.addEventListener('mouseup', stopHolding);
+        window.addEventListener('mouseleave', stopHolding);
+        window.addEventListener('touchend', stopHolding);
     </script>
 </body>
 </html>
